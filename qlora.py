@@ -625,7 +625,11 @@ def make_data_module(tokenizer: transformers.PreTrainedTokenizer, args) -> Dict:
             })
         elif dataset_format == 'input-output':
             # leave as is
-            pass
+            dataset = dataset.map(lambda x: {
+                'input': x['input'],
+                'output': x['answer_icliniq'],
+            })
+            # pass
         # Remove unused columns.
         dataset = dataset.remove_columns(
             [col for col in dataset.column_names['train'] if col not in ['input', 'output']]
